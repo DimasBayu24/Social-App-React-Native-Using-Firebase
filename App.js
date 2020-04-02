@@ -1,15 +1,17 @@
-import React, {Component} from 'react';
-
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import React from 'react';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+// import {NavigationContainer} from '@react-navigation/native';
+// import {createStackNavigator} from '@react-navigation/stack';
 import LoginScreen from './src/Screen/LoginScreen';
-import HomeScreen from './src/Screen/HomeScreen';
-// import LocationScreen from './src/Screen/LocatioScreen';
-// import ProfileScreen from './src/Screen/ProfileScreen';
 import RegisterScreen from './src/Screen/RegisterScreen';
-// import ChatScreen from './src/Screen/ChatScreen';
 import LoadingScreen from './src/Screen/LoadingScreen';
 import * as firebase from 'firebase';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
+import GeoLocationScreen from './src/Screen/GeoLocationScreen';
+import ChatScreen from './src/Screen/ChatScreen';
+import ProfileScreen from './src/Screen/ProfileScreen';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 var firebaseConfig = {
   apiKey: 'AIzaSyB3wZtXZGh2LbNRONH4wKiJHtAgxaelWUU',
@@ -24,35 +26,49 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-const Stack = createStackNavigator();
+const AppTabNavigator = createBottomTabNavigator({
+  GeoLocation: {
+    screen: GeoLocationScreen,
+    navigationOptions: {
+      tabBarIcon: ({tintColor}) => <Icon name="wpexplorer" size={25} />,
+      header: null,
+    },
+  },
+  Chat: {
+    screen: ChatScreen,
+    navigationOptions: {
+      tabBarIcon: ({tintColor}) => <Icon name="comment-o" size={25} />,
+      header: null,
+    },
+  },
+  Profile: {
+    screen: ProfileScreen,
+    navigationOptions: {
+      tabBarIcon: ({tintColor}) => <Icon name="user" size={25} />,
+      header: null,
+    },
+  },
+  // tabBarOptions: {
+  //   activeTintColor: '#161F3D',
+  //   inactiveTintColor: 'B8BBC4',
+  //   showLabel: false,
+  // },
+});
 
-export default class Navigator extends Component {
-  render() {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="LoginScreen"
-            component={LoginScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="RegisterScreen"
-            component={RegisterScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="LoadingScreen"
-            component={LoadingScreen}
-            options={{headerShown: true}}
-          />
-          <Stack.Screen
-            name="HomeScreen"
-            component={HomeScreen}
-            options={{headerShown: false}}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
-}
+const AuthStack = createStackNavigator({
+  Login: LoginScreen,
+  Register: RegisterScreen,
+});
+
+export default createAppContainer(
+  createSwitchNavigator(
+    {
+      Loading: LoadingScreen,
+      App: AppTabNavigator,
+      Auth: AuthStack,
+    },
+    {
+      initialRouteName: 'Loading',
+    },
+  ),
+);

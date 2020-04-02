@@ -5,7 +5,7 @@ export default class GeoLocationScreen extends Component {
   render() {
     return (
       <View style={style.container}>
-        <Text>ChatScreen</Text>
+        <Text>GeoLocationScreen</Text>
       </View>
     );
   }

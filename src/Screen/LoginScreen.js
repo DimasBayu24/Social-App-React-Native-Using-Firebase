@@ -1,9 +1,20 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, TextInput, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TextInput,
+  Image,
+  LayoutAnimation,
+} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
 
 export default class LoginScreen extends Component {
+  static navigationOptions = {
+    header: null,
+  };
+
   state = {
     email: '',
     password: '',
@@ -20,6 +31,8 @@ export default class LoginScreen extends Component {
   };
 
   render() {
+    LayoutAnimation.easeInEaseOut();
+
     return (
       <View style={style.container}>
         <View style={style.logoMainContainer}>
@@ -66,7 +79,7 @@ export default class LoginScreen extends Component {
 
         <TouchableOpacity
           style={{alignSelf: 'center', marginTop: 32}}
-          onPress={() => this.props.navigation.navigate('RegisterScreen')}>
+          onPress={() => this.props.navigation.navigate('Register')}>
           <Text style={{color: '#414959', fontSize: 13}}>
             New to App?{' '}
             <Text style={{fontWeight: '500', color: '#E9446A'}}>Sign Up</Text>
@@ -80,7 +93,7 @@ export default class LoginScreen extends Component {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: '#221f1f',
   },
   greeting: {
     marginTop: 32,
@@ -114,7 +127,7 @@ const style = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 40,
     fontSize: 15,
-    color: '#161F3D',
+    color: 'white',
   },
   button: {
     marginHorizontal: 30,

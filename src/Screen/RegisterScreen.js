@@ -1,9 +1,20 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, TextInput} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TextInput,
+  Image,
+  TouchableOpacity,
+  LayoutAnimation,
+} from 'react-native';
 import * as firebase from 'firebase';
 
 export default class RegisterScreen extends Component {
+  static navigationOptions = {
+    header: null,
+  };
+
   state = {
     name: '',
     email: '',
@@ -29,8 +40,18 @@ export default class RegisterScreen extends Component {
   };
 
   render() {
+    LayoutAnimation.easeInEaseOut();
+
     return (
       <View style={style.container}>
+        <View style={style.logoMainContainer}>
+          <View style={style.logoContainer}>
+            <Image
+              style={style.logo}
+              source={require('../Assets/img/AppLogo.png')}
+            />
+          </View>
+        </View>
         <Text style={style.greeting}>{'Hello!\nSign up to get started.'}</Text>
         <View style={style.errorMessage}>
           {this.state.errorMessage && (
@@ -75,8 +96,8 @@ export default class RegisterScreen extends Component {
 
         <TouchableOpacity
           style={{alignSelf: 'center', marginTop: 32}}
-          onPress={() => this.props.navigation.navigate('LoginScreen')}>
-          <Text style={{color: '#41/4959', fontSize: 13}}>
+          onPress={() => this.props.navigation.navigate('Login')}>
+          <Text style={{color: '#414959', fontSize: 13}}>
             Already have an account?
             <Text style={{fontWeight: '500', color: '#E9446A'}}>Login</Text>
           </Text>
@@ -89,11 +110,13 @@ export default class RegisterScreen extends Component {
 const style = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#221f1f',
   },
   greeting: {
     marginTop: 32,
     fontSize: 18,
     textAlign: 'center',
+    color: '#2AE956',
   },
   errorMessage: {
     height: 72,
@@ -130,5 +153,18 @@ const style = StyleSheet.create({
     height: 52,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  logoMainContainer: {
+    marginTop: 50,
+    width: '100%',
+    alignItems: 'center',
+  },
+  logoContainer: {
+    width: 170,
+    height: 120,
+  },
+  logo: {
+    width: '100%',
+    height: '100%',
   },
 });
