@@ -26,34 +26,46 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-const AppTabNavigator = createBottomTabNavigator({
-  GeoLocation: {
-    screen: GeoLocationScreen,
-    navigationOptions: {
-      tabBarIcon: ({tintColor}) => <Icon name="wpexplorer" size={25} />,
-      header: null,
+const AppTabNavigator = createBottomTabNavigator(
+  {
+    GeoLocation: {
+      screen: GeoLocationScreen,
+      navigationOptions: {
+        tabBarIcon: ({tintColor}) => (
+          <Icon color={'#fff'} name="wpexplorer" size={25} />
+        ),
+        header: null,
+      },
+    },
+    Chat: {
+      screen: ChatScreen,
+      navigationOptions: {
+        tabBarIcon: ({tintColor}) => (
+          <Icon color={'#fff'} name="comment-o" size={25} />
+        ),
+        header: null,
+      },
+    },
+    Profile: {
+      screen: ProfileScreen,
+      navigationOptions: {
+        tabBarIcon: ({tintColor}) => (
+          <Icon color={'#fff'} name="user" size={25} />
+        ),
+        header: null,
+      },
     },
   },
-  Chat: {
-    screen: ChatScreen,
-    navigationOptions: {
-      tabBarIcon: ({tintColor}) => <Icon name="comment-o" size={25} />,
-      header: null,
+  {
+    tabBarOptions: {
+      activeTintColor: '#2f2c2c',
+      inactiveTintColor: '#878787',
+      showLabel: false,
+      inactiveBackgroundColor: '#2f2c2c',
+      activeBackgroundColor: '#878787',
     },
   },
-  Profile: {
-    screen: ProfileScreen,
-    navigationOptions: {
-      tabBarIcon: ({tintColor}) => <Icon name="user" size={25} />,
-      header: null,
-    },
-  },
-  // tabBarOptions: {
-  //   activeTintColor: '#161F3D',
-  //   inactiveTintColor: 'B8BBC4',
-  //   showLabel: false,
-  // },
-});
+);
 
 const AuthStack = createStackNavigator({
   Login: LoginScreen,

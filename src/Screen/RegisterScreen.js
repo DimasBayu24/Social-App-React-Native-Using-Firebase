@@ -110,7 +110,7 @@ export default class RegisterScreen extends Component {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#221f1f',
+    backgroundColor: '#2f2c2c',
   },
   greeting: {
     marginTop: 32,
