@@ -6,6 +6,7 @@ import {
   TextInput,
   Image,
   LayoutAnimation,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
@@ -26,7 +27,7 @@ export default class LoginScreen extends Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .catch(error => this.setState({errorMessage: error.message}));
+      .catch((error) => this.setState({errorMessage: error.message}));
     this.props.navigation.navigate('HomeScreen');
   };
 
@@ -35,43 +36,45 @@ export default class LoginScreen extends Component {
 
     return (
       <View style={style.container}>
-        <View style={style.logoMainContainer}>
-          <View style={style.logoContainer}>
-            <Image
-              style={style.logo}
-              source={require('../Assets/img/AppLogo.png')}
-            />
-          </View>
-        </View>
-        <Text style={style.greeting}>{'Hello Again.\nWelcome Back.'}</Text>
-        <View style={style.errorMessage}>
-          {this.state.errorMessage && (
-            <Text style={style.error}>{this.state.errorMessage}</Text>
-          )}
-        </View>
-
-        <View style={style.form}>
-          <View>
-            <Text style={style.inputTitle}>Email Adrress</Text>
-            <TextInput
-              style={style.input}
-              autoCapitalize="none"
-              onChangeText={email => this.setState({email})}
-              value={this.state.email}></TextInput>
-          </View>
-
-          <View style={{marginTop: 32}}>
-            <View>
-              <Text style={style.inputTitle}>Password</Text>
-              <TextInput
-                style={style.input}
-                secureTextEntry
-                autoCapitalize="none"
-                onChangeText={password => this.setState({password})}
-                value={this.state.password}></TextInput>
+        <KeyboardAvoidingView>
+          <View style={style.logoMainContainer}>
+            <View style={style.logoContainer}>
+              <Image
+                style={style.logo}
+                source={require('../Assets/img/AppLogo.png')}
+              />
             </View>
           </View>
-        </View>
+          <Text style={style.greeting}>{'Hello Again.\nWelcome Back.'}</Text>
+          <View style={style.errorMessage}>
+            {this.state.errorMessage && (
+              <Text style={style.error}>{this.state.errorMessage}</Text>
+            )}
+          </View>
+
+          <View style={style.form}>
+            <View>
+              <Text style={style.inputTitle}>Email Adrress</Text>
+              <TextInput
+                style={style.input}
+                autoCapitalize="none"
+                onChangeText={(email) => this.setState({email})}
+                value={this.state.email}></TextInput>
+            </View>
+
+            <View style={{marginTop: 32}}>
+              <View>
+                <Text style={style.inputTitle}>Password</Text>
+                <TextInput
+                  style={style.input}
+                  secureTextEntry
+                  autoCapitalize="none"
+                  onChangeText={(password) => this.setState({password})}
+                  value={this.state.password}></TextInput>
+              </View>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
 
         <TouchableOpacity style={style.button} onPress={this.handleLogin}>
           <Text style={{color: '#FFF', fontWeight: '500'}}>Sign In</Text>
@@ -127,7 +130,7 @@ const style = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 40,
     fontSize: 15,
-    color: 'white',
+    color: '#8A8F9E',
   },
   button: {
     marginHorizontal: 30,

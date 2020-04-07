@@ -7,6 +7,8 @@ import {
   Image,
   TouchableOpacity,
   LayoutAnimation,
+  KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import * as firebase from 'firebase';
 
@@ -26,12 +28,25 @@ export default class RegisterScreen extends Component {
     firebase
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(userCredentials => {
+      .then((userCredentials) => {
         return userCredentials.user.updateProfile({
           displayName: this.state.name,
         });
       })
-      .catch(error =>
+      .then(async () => {
+        const uid = await firebase.auth().currentUser.uid;
+        const email = await firebase.auth().currentUser.email;
+        const ref = await firebase.database().ref(`users/${uid}`);
+
+        setTimeout(async () => {
+          await ref.set({
+            uid: uid,
+            email: email,
+            displayName: this.state.name,
+          });
+        });
+      })
+      .catch((error) =>
         this.setState({
           errorMessage: error.message,
         }),
@@ -51,21 +66,23 @@ export default class RegisterScreen extends Component {
               source={require('../Assets/img/AppLogo.png')}
             />
           </View>
+          <Text style={style.greeting}>
+            {'Hello! Sign up\nto get started.'}
+          </Text>
         </View>
-        <Text style={style.greeting}>{'Hello!\nSign up to get started.'}</Text>
         <View style={style.errorMessage}>
           {this.state.errorMessage && (
             <Text style={style.error}>{this.state.errorMessage}</Text>
           )}
         </View>
 
-        <View style={style.form}>
+        <ScrollView style={style.form}>
           <View>
             <Text style={style.inputTitle}>Full name</Text>
             <TextInput
               style={style.input}
               autoCapitalize="none"
-              onChangeText={name => this.setState({name})}
+              onChangeText={(name) => this.setState({name})}
               value={this.state.name}></TextInput>
           </View>
           <View style={{marginTop: 32}}>
@@ -73,7 +90,7 @@ export default class RegisterScreen extends Component {
             <TextInput
               style={style.input}
               autoCapitalize="none"
-              onChangeText={email => this.setState({email})}
+              onChangeText={(email) => this.setState({email})}
               value={this.state.email}></TextInput>
           </View>
 
@@ -84,24 +101,24 @@ export default class RegisterScreen extends Component {
                 style={style.input}
                 secureTextEntry
                 autoCapitalize="none"
-                onChangeText={password => this.setState({password})}
+                onChangeText={(password) => this.setState({password})}
                 value={this.state.password}></TextInput>
             </View>
           </View>
-        </View>
 
-        <TouchableOpacity style={style.button} onPress={this.handleSignUp}>
-          <Text style={{color: '#FFF', fontWeight: '500'}}>Sign Up</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={style.button} onPress={this.handleSignUp}>
+            <Text style={{color: '#FFF', fontWeight: '500'}}>Sign Up</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={{alignSelf: 'center', marginTop: 32}}
-          onPress={() => this.props.navigation.navigate('Login')}>
-          <Text style={{color: '#414959', fontSize: 13}}>
-            Already have an account?
-            <Text style={{fontWeight: '500', color: '#E9446A'}}>Login</Text>
-          </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{alignSelf: 'center', marginTop: 32}}
+            onPress={() => this.props.navigation.navigate('Login')}>
+            <Text style={{color: '#414959', fontSize: 13}}>
+              Already have an account?
+              <Text style={{fontWeight: '500', color: '#E9446A'}}>Login</Text>
+            </Text>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
     );
   }
@@ -144,7 +161,7 @@ const style = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 40,
     fontSize: 15,
-    color: '#161F3D',
+    color: '#8A8F9E',
   },
   button: {
     marginHorizontal: 30,
@@ -153,8 +170,11 @@ const style = StyleSheet.create({
     height: 52,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 35,
   },
   logoMainContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     marginTop: 50,
     width: '100%',
     alignItems: 'center',

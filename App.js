@@ -1,8 +1,6 @@
 import React from 'react';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-// import {NavigationContainer} from '@react-navigation/native';
-// import {createStackNavigator} from '@react-navigation/stack';
 import LoginScreen from './src/Screen/LoginScreen';
 import RegisterScreen from './src/Screen/RegisterScreen';
 import LoadingScreen from './src/Screen/LoadingScreen';
@@ -10,35 +8,36 @@ import * as firebase from 'firebase';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import GeoLocationScreen from './src/Screen/GeoLocationScreen';
 import ChatScreen from './src/Screen/ChatScreen';
+import ChatBoxScreen from './src/Screen/ChatBoxScreen';
 import ProfileScreen from './src/Screen/ProfileScreen';
+import FriendProfileScreen from './src/Screen/FriendProfileScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-var firebaseConfig = {
-  apiKey: 'AIzaSyB3wZtXZGh2LbNRONH4wKiJHtAgxaelWUU',
-  authDomain: 'realtimechat-react-native.firebaseapp.com',
-  databaseURL: 'https://realtimechat-react-native.firebaseio.com',
-  projectId: 'realtimechat-react-native',
-  storageBucket: 'realtimechat-react-native.appspot.com',
-  messagingSenderId: '525012632072',
-  appId: '1:525012632072:web:c960cb72e1402cbe01c7bd',
-  measurementId: 'G-MLBV3Y18LN',
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
+const ChatStack = createStackNavigator(
+  {
+    ChatList: {screen: ChatScreen},
+    ChatBox: {screen: ChatBoxScreen},
+    FriendProfile: {screen: FriendProfileScreen},
+  },
+  {
+    initialRouteName: 'ChatList',
+    headerMode: 'none',
+  },
+);
 const AppTabNavigator = createBottomTabNavigator(
   {
-    GeoLocation: {
-      screen: GeoLocationScreen,
+    Profile: {
+      screen: ProfileScreen,
       navigationOptions: {
         tabBarIcon: ({tintColor}) => (
-          <Icon color={'#fff'} name="wpexplorer" size={25} />
+          <Icon color={'#fff'} name="user" size={25} />
         ),
         header: null,
       },
     },
+
     Chat: {
-      screen: ChatScreen,
+      screen: ChatStack,
       navigationOptions: {
         tabBarIcon: ({tintColor}) => (
           <Icon color={'#fff'} name="comment-o" size={25} />
@@ -46,11 +45,11 @@ const AppTabNavigator = createBottomTabNavigator(
         header: null,
       },
     },
-    Profile: {
-      screen: ProfileScreen,
+    GeoLocation: {
+      screen: GeoLocationScreen,
       navigationOptions: {
         tabBarIcon: ({tintColor}) => (
-          <Icon color={'#fff'} name="user" size={25} />
+          <Icon color={'#fff'} name="wpexplorer" size={25} />
         ),
         header: null,
       },
